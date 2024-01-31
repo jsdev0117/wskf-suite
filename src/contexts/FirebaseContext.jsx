@@ -57,7 +57,7 @@ export const FirebaseProvider = ({ children }) => {
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           let auth_user = await user.getIdTokenResult(true);
-          localStorage.setItem('token', auth_user.token)
+          localStorage.setItem('token', auth_user.token);
           dispatch({
             type: LOGIN,
             payload: {
@@ -67,7 +67,7 @@ export const FirebaseProvider = ({ children }) => {
                 token: auth_user.token,
                 role: auth_user.claims["https://hasura.io/jwt/claims"]["x-hasura-default-role"],
                 email: user.email,
-                name: user.displayName || 'John Doe'
+                name: user.displayName || ''
               }
             }
           });

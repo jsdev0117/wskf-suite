@@ -8,13 +8,14 @@ import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 
 // project import
-import navigation from 'menu-items';
+// import navigation from 'menu-items';
 
 // assets
 import { IconChevronRight, IconTallymark1 } from '@tabler/icons-react';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import HomeIcon from '@mui/icons-material/Home';
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone';
+import useAuth from 'hooks/useAuth';
 
 // ==============================|| BREADCRUMBS TITLE ||============================== //
 
@@ -46,10 +47,22 @@ const Breadcrumbs = ({
     sx,
     ...others
 }) => {
+    const { user } = useAuth();
     const theme = useTheme();
     const location = useLocation();
     const [main, setMain] = useState();
     const [item, setItem] = useState();
+
+    let navigation = { items: [admin] }
+
+    switch (user?.role) {
+        case 'admin':
+            navigation.items = [admin];
+            break;
+        case 'sensei':
+            navigation.items = [sensei];
+            break;
+    }
 
     const iconSX = {
         marginRight: theme.spacing(0.75),

@@ -1,19 +1,58 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const functions = require("firebase-functions");
+const admin = require("firebase-admin");
+const axios = require("axios");
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+admin.initializeApp(functions.config().firebase);
+const uri = "https://wskf-suite.hasura.app/v1/graphql";
+const headers = {
+  "Content-Type": "application/json",
+  "x-hasura-admin-secret": "QC5ZkgJDHuX4lZ0xX37RQ75kWLpDKhGIUYh93M2Q0u3BLfqJrDr3Q4pQ0rl9WQT8",
+}
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+const insert_user = `
+mutation fb_insert_user($objects: [users_insert_input!] = {}) {
+  insert_users(objects: $objects) {
+    affected_rows
+  }
+}
+`;
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+exports.addUser = functions.https.onCall(async (request) => {
+  let { email, name, role, password } = request;
+
+  const user = await admin.auth().createUser({
+    email,
+    emailVerified: true,
+    password,
+    displayName: name,
+    disabled: false,
+    role,
+  });
+
+  if (user) {
+    let customClaims = {
+      "https://hasura.io/jwt/claims": {
+        "x-hasura-default-role": role,
+        "x-hasura-allowed-roles": ["admin", "sensei"],
+        "x-hasura-user-id": user.uid,
+      },
+    };
+    admin.auth().setCustomUserClaims(user.uid, customClaims).then().catch((error) => {
+      console.log(error);
+    });
+
+    // insertar en hasura
+    const { data } = await axios.post(uri, {
+      query: insert_user,
+      variables: {
+        objects: {
+          id: user.uid,
+          name,
+          email,
+        },
+      },
+    }, { headers });
+
+    return data;
+  }
+});
