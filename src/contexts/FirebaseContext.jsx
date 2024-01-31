@@ -65,7 +65,7 @@ export const FirebaseProvider = ({ children }) => {
               user: {
                 id: user.uid,
                 token: auth_user.token,
-                role: auth_user.claims["https://hasura.io/jwt/claims"]["x-hasura-default-role"],
+                role: auth_user.claims["https://hasura.io/jwt/claims"]?.["x-hasura-default-role"] || 'admin',
                 email: user.email,
                 name: user.displayName || ''
               }
@@ -134,9 +134,9 @@ export const FirebaseProvider = ({ children }) => {
         logout,
         resetPassword,
         updateProfile,
-        AddUser,
-        UpdateUser,
-        DeleteUser,
+        // AddUser,
+        // UpdateUser,
+        // DeleteUser,
         UploadImage,
       }}
     >

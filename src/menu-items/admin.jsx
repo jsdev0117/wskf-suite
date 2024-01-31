@@ -5,17 +5,16 @@ import { IconHome, IconKey } from '@tabler/icons-react';
 
 const admin = {
   id: 'admin',
-  title: 'Admin Pages',
   icon: IconKey,
   type: 'group',
   children: [
     {
-      id: 'Home',
-      title: 'Home',
+      id: 'Dojos',
+      title: 'Dojos',
       type: 'item',
       icon: IconHome,
-      url: '/'
-    }
+      url: '/dojos'
+    },
   ]
 };
 

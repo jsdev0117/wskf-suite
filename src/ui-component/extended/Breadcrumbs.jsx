@@ -16,6 +16,8 @@ import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import HomeIcon from '@mui/icons-material/Home';
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone';
 import useAuth from 'hooks/useAuth';
+import admin from 'menu-items/admin';
+import sensei from 'menu-items/sensei';
 
 // ==============================|| BREADCRUMBS TITLE ||============================== //
 
