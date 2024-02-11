@@ -11,7 +11,7 @@ import Logo from 'assets/images/icons/wskf-logo.png';
 
 const LogoSection = () => (
     <Link component={RouterLink} to={DASHBOARD_PATH} aria-label="berry logo">
-        <img src={Logo} width='92px'/>
+        <img src={Logo} width='48px'/>
     </Link>
 );
 

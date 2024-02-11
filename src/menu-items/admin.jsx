@@ -1,5 +1,5 @@
 // assets
-import { IconHome, IconKey } from '@tabler/icons-react';
+import { IconHome, IconKey, IconUsers } from '@tabler/icons-react';
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
@@ -14,6 +14,13 @@ const admin = {
       type: 'item',
       icon: IconHome,
       url: '/dojos'
+    },
+    {
+      id: 'Members',
+      title: 'Members',
+      type: 'item',
+      icon: IconUsers,
+      url: '/members'
     },
   ]
 };
